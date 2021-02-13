@@ -11,7 +11,7 @@ import uvicorn
 import models
 
 
-# models.Base.metadata.create_all(bind=engine)
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(docs_url='/swagger-ui/', port=8080)
 
