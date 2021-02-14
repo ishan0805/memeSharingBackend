@@ -51,14 +51,14 @@ def get_db():
 class Meme(BaseModel):
     name: str
     url: str
-    description: str
+    caption: str
 
 # create pydantic class for updating meme
 
 
 class PatchMeme(BaseModel):
     url: str
-    description: str
+    caption: str
 
 # route to get latest 100 memes
 
@@ -90,7 +90,7 @@ async def post(meme: Meme, db: Session = Depends(get_db)):
     memes = Memes()
     memes.name = meme.name
     memes.url = meme.url
-    memes.description = meme.description
+    memes.caption = meme.caption
     db.add(memes)
     db.commit()
 
@@ -103,7 +103,7 @@ async def patch(id: int, patchmeme: PatchMeme, db: Session = Depends(get_db)):
     try:
         memes = db.query(Memes).filter(Memes.id == id).first()
         memes.url = patchmeme.url
-        memes.description = patchmeme.description
+        memes.caption = patchmeme.caption
         db.commit()
     except:
         return JSONResponse(status_code=404)
