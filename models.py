@@ -10,4 +10,4 @@ class Memes(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     url = Column(String)
-    description = Column(String)
+    caption = Column(String)
