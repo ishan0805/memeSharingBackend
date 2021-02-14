@@ -19,6 +19,7 @@ app = FastAPI(docs_url='/swagger-ui/', port=8080)
 # for Cors control
 # enable support for ors
 origins = [
+    "*"
     "http://localhost.tiangolo.com",
     "https://localhost.tiangolo.com",
     "http://localhost",
