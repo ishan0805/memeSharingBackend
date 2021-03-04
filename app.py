@@ -109,5 +109,14 @@ async def patch(id: int, patchmeme: PatchMeme, db: Session = Depends(get_db)):
         return JSONResponse(status_code=404)
 
 
+@app.delete('/memes/{id}')
+async def delete(id: int, db: Session = Depends(get_db)):
+    try:
+        db.query(Memes).filter(Memes.id == id).delete()
+        db.commit()
+    except:
+        return JSONResponse(status_code=404)
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8000)
