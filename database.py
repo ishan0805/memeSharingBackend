@@ -19,10 +19,10 @@ ssl_mode = urllib.parse.quote_plus(str(os.environ.get('ssl_mode', 'prefer')))
 SQLALCHEMY_DATABASE_URL = 'postgresql://{}:{}@{}:{}/{}?sslmode={}'.format(
     db_username, db_password, host_server, db_server_port, database_name, ssl_mode)
 
-#SQLALCHEMY_DATABASE_URL = "sqlite:///./memes.db'''
+SQLALCHEMY_DATABASE_URL = "sqlite:///./memes.db'''
 
 
-SQLALCHEMY_DATABASE_URL = "postgres://mbemzptsbvjclz:8a90c0adb9e34766149c1252eb95a321ce883defb5fac4e40b4cef31480145c9@ec2-100-24-139-146.compute-1.amazonaws.com:5432/d3ol9sdno7gh7r"
+SQLALCHEMY_DATABASE_URL = "postgresql://mbemzptsbvjclz:8a90c0adb9e34766149c1252eb95a321ce883defb5fac4e40b4cef31480145c9@ec2-100-24-139-146.compute-1.amazonaws.com:5432/d3ol9sdno7gh7r"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, pool_size=3, max_overflow=0
