@@ -10,5 +10,7 @@ starlette
 toml
 uvicorn
 psycopg2
+passlib
+bcrypt
 
 
