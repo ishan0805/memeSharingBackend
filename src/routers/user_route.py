@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy.sql.elements import Null
 from ..database import get_db
 from ..hashing import *  # use .. to move up a module
 from ..schemas.user_schemas import *
@@ -15,16 +16,22 @@ router = APIRouter(
 
 @router.post('/', response_model=ShowUser)
 async def post(user: User, db: Session = Depends(get_db)):
+    db_user = Users()
     try:
-        db_user = Users()
+       
         db_user.name = user.name
         db_user.password = bcrypt(user.password)
         db_user.email = user.email
-        db.add(db_user)
+        db.add(db_user) 
         db.commit()
 
     except:
-        return JSONResponse(status_code=409, content={"message": "User already exists"})
+        q=db.query(Users).filter(Users.email==user.email)
+        if(q==Null):
+            return JSONResponse(status_code=409, content={"message": "Username already taken"})
+        q=db.query(Users).filter(Users.password==db_user.password)    
+        if q== Null:
+            return JSONResponse(status_code=409, content={"message": "Username already taken"})
 
     return user
 

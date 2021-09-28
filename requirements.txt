@@ -1,16 +1,14 @@
-autopep8
-click
 fastapi
-h11
-pep8
 pycodestyle
 pydantic
 SQLAlchemy
 starlette
 toml
 uvicorn
-psycopg2
+psycopg2-binary
 passlib
 bcrypt
+python-multipart
+python-jose
 
 

@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from ..database import get_db  # use .. to move up a module
 from ..schemas.meme_schemas import *
@@ -11,7 +12,7 @@ router = APIRouter(
 )
 
 
-@router.get('/', response_model=ShowMeme)  # instead of app.get use router.get
+@router.get('/', response_model=List[ShowMeme])  # instead of app.get use router.get
 async def get(db: Session = Depends(get_db)):
 
     return db.query(Memes).order_by(Memes.id.desc()).limit(100).all()
@@ -32,10 +33,11 @@ async def get(id: int, db: Session = Depends(get_db)):
 # route to post meme
 @router.post('/')
 def post(meme: Meme, db: Session = Depends(get_db)):
+    # hard code change afterward
     memes = Memes(url=meme.url,
                   caption=meme.caption, owner_id=1)
 
-    # hard code change afterward
+    
     db.add(memes)
     db.commit()
     db.refresh(memes)
