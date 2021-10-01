@@ -3,6 +3,8 @@ from fastapi import APIRouter, Depends
 from ..database import get_db  # use .. to move up a module
 from ..schemas.meme_schemas import *
 from ..models.meme_model import *
+from ..schemas import user_schemas
+from .. import token
 from sqlalchemy.orm import Session
 from starlette.responses import JSONResponse
 # create instance of router
@@ -13,14 +15,16 @@ router = APIRouter(
 
 
 @router.get('/', response_model=List[ShowMeme])  # instead of app.get use router.get
-async def get(db: Session = Depends(get_db)):
+async def get(db: Session = Depends(get_db)
+,current_user:user_schemas.User = Depends(token.get_current_user) ):
 
     return db.query(Memes).order_by(Memes.id.desc()).limit(100).all()
 
 
 # route to get meme by id
 @router.get('/{id}', response_model=ShowMeme)
-async def get(id: int, db: Session = Depends(get_db)):
+async def get(id: int, db: Session = Depends(get_db)
+,current_user:user_schemas.User = Depends(token.get_current_user)):
 
     memes = db.query(Memes).filter(Memes.id == id).first()
 
@@ -32,7 +36,7 @@ async def get(id: int, db: Session = Depends(get_db)):
 
 # route to post meme
 @router.post('/')
-def post(meme: Meme, db: Session = Depends(get_db)):
+def post(meme: Meme, db: Session = Depends(get_db),current_user:user_schemas.User = Depends(token.get_current_user)):
     # hard code change afterward
     memes = Memes(url=meme.url,
                   caption=meme.caption, owner_id=1)
@@ -46,7 +50,7 @@ def post(meme: Meme, db: Session = Depends(get_db)):
 
 # route to update
 @router.patch('/{id}')
-async def patch(id: int, patchmeme: PatchMeme, db: Session = Depends(get_db)):
+async def patch(id: int, patchmeme: PatchMeme, db: Session = Depends(get_db),current_user:user_schemas.User = Depends(token.get_current_user)):
     try:
         memes = db.query(Memes).filter(Memes.id == id).first()
         memes.url = patchmeme.url
@@ -58,7 +62,7 @@ async def patch(id: int, patchmeme: PatchMeme, db: Session = Depends(get_db)):
 
 # route to delete meme
 @router.delete('/{id}')
-async def delete(id: int, db: Session = Depends(get_db)):
+async def delete(id: int, db: Session = Depends(get_db),current_user:user_schemas.User = Depends(token.get_current_user)):
     try:
         db.query(Memes).filter(Memes.id == id).delete()
         db.commit()

@@ -1,5 +1,8 @@
+from datetime import timedelta
 from fastapi import APIRouter, Depends
 from sqlalchemy.sql.elements import Null
+
+from src import token
 from ..database import get_db
 from ..hashing import *  # use .. to move up a module
 from ..schemas.user_schemas import *
@@ -14,7 +17,7 @@ router = APIRouter(
 )
 
 
-@router.post('/', response_model=ShowUser)
+@router.post('/', )
 async def post(user: User, db: Session = Depends(get_db)):
     db_user = Users()
     try:
@@ -33,7 +36,11 @@ async def post(user: User, db: Session = Depends(get_db)):
         if q== Null:
             return JSONResponse(status_code=409, content={"message": "Username already taken"})
 
-    return user
+    access_token_expires = timedelta(minutes=token.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = token.create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"} 
 
     # return db.query(Memes).order_by(Memes.id.desc()).limit(100).all()
 
