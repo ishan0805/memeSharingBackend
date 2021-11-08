@@ -21,7 +21,7 @@ app.include_router(user_route.router)
 # for Cors control
 # enable support for ors
 origins = [
-    "*",
+    "*",'40023','34469','41743'
 ]
 
 app.add_middleware(

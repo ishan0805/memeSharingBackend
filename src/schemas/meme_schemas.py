@@ -12,6 +12,7 @@ class Meme(BaseModel):
 
 
 class ShowMeme(BaseModel):
+    id:int
     url: str
     caption: str
     owner: ShowUser

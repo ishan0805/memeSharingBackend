@@ -8,9 +8,9 @@ from src.schemas import token_schemas
 from src.database import get_db
 from src.models.user_model import Users
 
-SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
+SECRET_KEY = "6f9a39168b15c758d779ce90b66f3098379a75a5f3d291beca2b618b11545523"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 1000
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
@@ -40,7 +40,7 @@ db: Session = Depends(get_db)):
         token_data = token_schemas.TokenData(email=email)
     except JWTError:
         raise credentials_exception
-    user=db.query(Users).filter(Users.email==token_data.email)
+    user=db.query(Users).filter(Users.email==token_data.email).first()
     if user is None:
         raise credentials_exception
     return user    

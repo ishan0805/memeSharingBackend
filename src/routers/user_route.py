@@ -17,30 +17,34 @@ router = APIRouter(
 )
 
 
-@router.post('/', )
+@router.post('/signup', )
 async def post(user: User, db: Session = Depends(get_db)):
     db_user = Users()
+    q=db.query(Users).filter(Users.email==user.email).first()
+    if(q!=None):
+        return JSONResponse(status_code=409, content={"message": "Username already taken"})
+    q=db.query(Users).filter(Users.password==bcrypt(user.password)).first()   
+    if q!= None:
+        return JSONResponse(status_code=409, content={"message": "password already taken"})
     try:
-       
-        db_user.name = user.name
+        if user.name !=None:
+            db_user.name = user.name
         db_user.password = bcrypt(user.password)
         db_user.email = user.email
         db.add(db_user) 
         db.commit()
+        
 
     except:
-        q=db.query(Users).filter(Users.email==user.email)
-        if(q==Null):
-            return JSONResponse(status_code=409, content={"message": "Username already taken"})
-        q=db.query(Users).filter(Users.password==db_user.password)    
-        if q== Null:
-            return JSONResponse(status_code=409, content={"message": "Username already taken"})
+        
+        return JSONResponse(status_code=500, content={"message": "SomeError occured"})
+        
 
     access_token_expires = timedelta(minutes=token.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = token.create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"} 
+    return {"token": access_token, "token_type": "bearer","email":user.email} 
 
     # return db.query(Memes).order_by(Memes.id.desc()).limit(100).all()
 
