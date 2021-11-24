@@ -46,7 +46,8 @@ def post(meme: Meme, db: Session = Depends(get_db),current_user:user_schemas.Use
     
     db.add(memes)
     db.commit()
-    db.refresh(memes)
+    return {'success':True}
+    #db.refresh(memes)
     # print(memes.dict())
 
 
