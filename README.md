@@ -4,4 +4,4 @@ It is full stack application for the purpose of meme sharing. It's front end is 
 
 deployed url - https://eager-mestorf-71d5bb.netlify.app/#/
 
-Api Documentation- https://memesharing.herokuapp.com/swagger-ui/
+Api Documentation- https://czgzzv.deta.dev/swagger-ui/
