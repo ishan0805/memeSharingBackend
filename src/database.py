@@ -28,11 +28,11 @@ engine = create_engine(
 )
 
 # Original Database
-'''
-SQLALCHEMY_DATABASE_URL = "postgresql://mbemzptsbvjclz:8a90c0adb9e34766149c1252eb95a321ce883defb5fac4e40b4cef31480145c9@ec2-100-24-139-146.compute-1.amazonaws.com:5432/d3ol9sdno7gh7r"
+
+"""SQLALCHEMY_DATABASE_URL = "postgresql://meme_user:UwlDSRe2bmh0CquIQNGbmyxdLCEI9SyE@dpg-cecnl794rebeiecria4g-a.singapore-postgres.render.com/meme"
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, pool_size=3, max_overflow=0
-)'''
+)"""
 
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

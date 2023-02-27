@@ -16,6 +16,7 @@ class ShowMeme(BaseModel):
     url: str
     caption: str
     owner: ShowUser
+    comment_count:int
 
     class Config:
         orm_mode = True
